@@ -1,16 +1,24 @@
 // src\routes\optimizeRoute.ts
 import { Router, Request, Response } from "express";
-import { userEvents } from "./trackRoute";
+import { UserEvent } from "../models/UserEvent";
+import {OptimizeContentResponse} from "../types/OptimizeContent.types";
 
 const router = Router();
 
-router.get("/optimize-content", (req: Request, res: Response) => {
-  const userIP = req.ip || "";
-  const events = userEvents[userIP as string];
+router.get("/optimize-content", async (req: Request, res: Response<OptimizeContentResponse>) => {
+  const ip = req.ip;
 
-  // If no events, assume low engagement
-  const shouldChange =
-    !events || (!events.ctaClicked && events.stayTime < 5000);
+  const recentEvents = await UserEvent.find({ ip }).sort({ timestamp: -1 }).limit(10);
+
+  let clicked = false;
+  let shortStay = false;
+
+  for (const e of recentEvents) {
+    if (e.event === "cta_click") clicked = true;
+    if (e.event === "stay_time" && e.value && e.value < 5000) shortStay = true;
+  }
+
+  const shouldChange = !clicked && shortStay;
 
   const variants = [
     {
@@ -25,17 +33,11 @@ router.get("/optimize-content", (req: Request, res: Response) => {
     },
   ];
 
-  if (shouldChange) {
-    res.json({
-      variant: variants[1], // Changed version
-      change: true,
-    });
-  } else {
-    res.json({
-      variant: variants[0], // Original version
-      change: false,
-    });
-  }
-});
+  res.json({
+    variant: shouldChange ? variants[1] : variants[0],
+    change: shouldChange,
+  });
+
+  });
 
 export default router;
