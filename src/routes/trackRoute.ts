@@ -1,3 +1,4 @@
+// src\routes\trackRoute.ts
 import { Router, Request, Response } from "express";
 import { UserEvent } from "../models/UserEvent";
 import { UserEventType } from "../types/UserEvent.types";
