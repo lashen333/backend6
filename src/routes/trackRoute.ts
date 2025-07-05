@@ -1,16 +1,17 @@
 // src\routes\trackRoute.ts
 import { Router, Request, Response } from "express";
-import { UserEvent } from "../models/UserEvent";
 import { UserEventType } from "../types/UserEvent.types";
+import { getUserIdFromIP } from "../utils/getUserIdFromIP";
+import { UserVariantEvent } from "../models/UserVariantEvent";
 
 const router = Router();
 
 router.post("/track", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { event, value } = req.body;
+    const { event, value, variantId } = req.body;
 
-    if (!event) {
-      res.status(400).json({ error: "Missing 'event' in body" });
+    if (!event || !variantId) {
+      res.status(400).json({ error: "Missing 'event' or 'variantId' in body" });
       return;
     }
 
@@ -20,16 +21,18 @@ router.post("/track", async (req: Request, res: Response): Promise<void> => {
       req.socket.remoteAddress ||
       "unknown";
 
-    // Prepare event payload
-    const newEvent: UserEventType = {
-      ip,
+    // Generate userId from IP
+    const userId = getUserIdFromIP(ip);
+
+    const newEvent = new UserVariantEvent({
+      userId,
+      variantId,
       event,
       value: typeof value === "number" ? value : undefined,
-    };
+      timestamp: Date.now(),
+    });
 
-    // Save to MongoDB
-    const saved = new UserEvent(newEvent);
-    await saved.save();
+    await newEvent.save();
 
     console.log("✅ Event saved:", newEvent);
     res.status(200).json({ success: true });
