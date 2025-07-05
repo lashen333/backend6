@@ -2,13 +2,15 @@
 import { Router, Request, Response } from "express";
 import { UserEvent } from "../models/UserEvent";
 import {OptimizeContentResponse} from "../types/OptimizeContent.types";
+import { getUserIdFromIP } from "../utils/getUserIdFromIP";
 
 const router = Router();
 
 router.get("/optimize-content", async (req: Request, res: Response<OptimizeContentResponse>) => {
-  const ip = req.ip;
+  const ip = req.ip||"";
+  const userId = getUserIdFromIP(ip);
 
-  const recentEvents = await UserEvent.find({ ip }).sort({ timestamp: -1 }).limit(10);
+  const recentEvents = await UserEvent.find({ userId }).sort({ timestamp: -1 }).limit(10);
 
   let clicked = false;
   let shortStay = false;

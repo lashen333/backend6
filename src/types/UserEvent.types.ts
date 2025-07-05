@@ -1,7 +1,7 @@
 // src\types\UserEvent.types.ts
 export interface UserEventType{
-    ip: string;
+    userId: string;
     event:"cta_click" | "stay_time" |string;
     value?: number;
-    timestamp?: Date;
+    timestamp: number;
 }
