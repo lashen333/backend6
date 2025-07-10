@@ -7,6 +7,11 @@ const UserVariantEventSchema = new mongoose.Schema({
   event: { type: String, enum: ["stay_time", "cta_click"], required: true },
   value: { type: Number },
   timestamp: { type: Number, required: true },
+  utms: {
+    type:Map,
+    of: String,
+  }
+  
 });
 
 export const UserVariantEvent = mongoose.model("UserVariantEvent", UserVariantEventSchema);

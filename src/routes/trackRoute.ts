@@ -1,19 +1,21 @@
 // src\routes\trackRoute.ts
 import { Router, Request, Response } from "express";
-import { UserEventType } from "../types/UserEvent.types";
 import { getUserIdFromIP } from "../utils/getUserIdFromIP";
 import { UserVariantEvent } from "../models/UserVariantEvent";
 
 const router = Router();
 
 router.post("/track", async (req: Request, res: Response): Promise<void> => {
+   console.log("📥 /track route hit");
   try {
-    const { event, value, variantId } = req.body;
+    const { event, value, variantId, utms } = req.body;
 
     if (!event || !variantId) {
       res.status(400).json({ error: "Missing 'event' or 'variantId' in body" });
       return;
     }
+    console.log("🔍 Body received:", req.body);
+
 
     // Get user's IP address
     const ip =
@@ -30,6 +32,7 @@ router.post("/track", async (req: Request, res: Response): Promise<void> => {
       event,
       value: typeof value === "number" ? value : undefined,
       timestamp: Date.now(),
+      utms: utms || undefined,
     });
 
     await newEvent.save();
