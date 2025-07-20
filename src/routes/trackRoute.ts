@@ -1,46 +1,97 @@
-// src\routes\trackRoute.ts
+// src/routes/trackRoute.ts
 import { Router, Request, Response } from "express";
-import { getUserIdFromIP } from "../utils/getUserIdFromIP";
-import { UserVariantEvent } from "../models/UserVariantEvent";
+import { UserAnalytics } from "../models/UserAnalytics";
+import { lookupGeo } from "../services/geoService";
+import { parseDevice } from "../services/deviceService";
 
 const router = Router();
 
-router.post("/track", async (req: Request, res: Response): Promise<void> => {
-   console.log("📥 /track route hit");
+router.post("/track", async (req: Request, res: Response) => {
+  console.log("\n=== 📥 New /track request ====");
   try {
-    const { event, value, variantId, utms } = req.body;
+    const {
+      event,
+      value,
+      variantId,
+      utms,
+      visitorId,
+      userAgent,
+      timestamp
+    } = req.body;
 
-    if (!event || !variantId) {
-      res.status(400).json({ error: "Missing 'event' or 'variantId' in body" });
+    // Basic validation
+    if (!event || !variantId || !visitorId) {
+      console.warn("❌ Missing required fields:", { event, variantId, visitorId });
+      res.status(400).json({ error: "Missing 'event', 'variantId', or 'visitorId' in body" });
       return;
     }
-    console.log("🔍 Body received:", req.body);
-
+    console.log("✅ Step 1: Received body:", req.body);
 
     // Get user's IP address
     const ip =
-      (req.headers["x-forwarded-for"] as string) ||
+      (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
       req.socket.remoteAddress ||
       "unknown";
 
-    // Generate userId from IP
-    const userId = getUserIdFromIP(ip);
+    console.log("✅ Step 2: IP address resolved:", ip);
 
-    const newEvent = new UserVariantEvent({
-      userId,
-      variantId,
-      event,
-      value: typeof value === "number" ? value : undefined,
-      timestamp: Date.now(),
-      utms: utms || undefined,
-    });
+    // Geo/device enrichment
+    const geo = lookupGeo(ip);
 
-    await newEvent.save();
+    console.log("✅ Step 3a: Geo info:", geo);
 
-    console.log("✅ Event saved:", newEvent);
+    const device = parseDevice(userAgent || "");
+    console.log("✅ Step 3b: Device info:", device);
+
+    // Use timestamp or fallback to now
+    const now = timestamp || Date.now();
+    console.log("✅ Step 4: Timestamp:", now);
+
+
+    // Try to find an existing analytics doc for this visitor
+    let doc = await UserAnalytics.findOne({ visitorId });
+
+    if (!doc) {
+      doc = new UserAnalytics({
+        visitorId,
+        userId: visitorId,      // (Or use your own getUserIdFromIP(ip) if needed)
+        ip,
+        country: (await geo).country,
+        region: (await geo).region,
+        city: (await geo).city,
+        deviceType: device.deviceType,
+        browser: device.browser,
+        os: device.os,
+        utms,
+        firstSeen: now,
+        lastSeen: now,
+        visits: 1,
+        events: [{ event, value, variantId, timestamp: now }],
+      });
+
+      console.log("✅ Step 5: Creating new analytics doc");
+
+    } else {
+      doc.lastSeen = now;
+      doc.visits = (doc.visits ?? 0) + 1;
+      doc.events.push({ event, value, variantId, timestamp: now });
+      doc.ip = ip;
+      doc.country = (await geo).country;
+      doc.city = (await geo).city;
+      doc.deviceType = device.deviceType;
+      doc.browser = device.browser;
+      doc.os = device.os;
+      // doc.platform = device.platform;
+      doc.utms = utms;
+      console.log("✅ Step 5: Updating existing analytics doc");
+    }
+
+    await doc.save();
+
+    console.log("✅ Analytics event saved:", doc._id, { event, variantId });
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error("❌ Failed to save event:", err);
+    console.error("❌ Failed to save analytics event:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
