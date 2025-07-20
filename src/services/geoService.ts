@@ -1,5 +1,7 @@
-// src\services\geoService.ts
-import fetch from "node-fetch";
+// src/services/geoService.ts
+
+const fetch = (...args: [any, any?]) => import('node-fetch').then(mod => mod.default(...args));
+
 export async function lookupGeo(ip: string) {
   try {
     const res = await fetch(`http://ip-api.com/json/${ip}`);
