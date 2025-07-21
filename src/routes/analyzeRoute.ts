@@ -1,7 +1,7 @@
 // src\routes\analyzeRoute.ts
 import { Router, Request, Response } from "express";
 import { UserVariantAssignment } from "../models/UserVariantAssignment";
-import { UserVariantEvent } from "../models/UserVariantEvent";
+import { UserVariantEvent } from "../models/UserVariantEvent"; // Assuming you have this model for events
 import mongoose from "mongoose";
 
 const router = Router();
