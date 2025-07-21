@@ -39,7 +39,7 @@ router.post("/track", async (req: Request, res: Response) => {
     console.log("✅ Step 2: IP address resolved:", ip);
 
     // Geo/device enrichment
-    const geo = lookupGeo(ip);
+    const geo = await lookupGeo(ip);
 
     console.log("✅ Step 3a: Geo info:", geo);
 
