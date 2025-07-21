@@ -1,17 +1,17 @@
 // src\models\UserVariantEvent.ts
-import mongoose from "mongoose";
+
+import mongoose from 'mongoose';
 
 const UserVariantEventSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  variantId: { type: String, required: true },
-  event: { type: String, enum: ["stay_time", "cta_click" , "utm_landing"], required: true },
-  value: { type: Number },
-  timestamp: { type: Number, required: true },
+  userId: String,
+  variantId: mongoose.Schema.Types.ObjectId,
+  event: String,
+  value: Number,
+  timestamp: Number,
   utms: {
-    type:Map,
-    of: String,
+    type: Map,
+    of: String, // or you can use `mongoose.Schema.Types.Mixed` if more flexibility needed
   }
-  
 });
 
-export const UserVariantEvent = mongoose.model("UserVariantEvent", UserVariantEventSchema);
+export const UserVariantEvent = mongoose.model('UserVariantEvent', UserVariantEventSchema);

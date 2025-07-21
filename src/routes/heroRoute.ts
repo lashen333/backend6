@@ -2,7 +2,7 @@
 import { Router, Request, Response } from "express";
 import{ HeroVariant } from "../models/HeroVariant";
 import{ UserVariantAssignment } from "../models/UserVariantAssignment";
-import{ getUserIdFromIP } from "../utils/getUserIdFromIP";
+import{ getUserIdFromIP } from "../utils/getuserIdFromIP";
 import { CampaignMap} from "../models/CampaignMap";
 
 const router = Router();

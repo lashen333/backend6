@@ -1,4 +1,4 @@
-// src/routes/trackRoute.ts
+// src\routes\trackRoute.ts
 import { Router, Request, Response } from "express";
 import { UserAnalytics } from "../models/UserAnalytics";
 import { lookupGeo } from "../services/geoService";
@@ -26,6 +26,9 @@ router.post("/track", async (req: Request, res: Response) => {
       return;
     }
     console.log("✅ Step 1: Received body:", req.body);
+
+    // 1️⃣ Extract platform (utm_source)
+    const platform = utms?.utm_source || undefined;
 
     // Get user's IP address
     const ip =
@@ -62,6 +65,7 @@ router.post("/track", async (req: Request, res: Response) => {
         deviceType: device.deviceType,
         browser: device.browser,
         os: device.os,
+        platform,
         utms,
         firstSeen: now,
         lastSeen: now,
@@ -81,7 +85,7 @@ router.post("/track", async (req: Request, res: Response) => {
       doc.deviceType = device.deviceType;
       doc.browser = device.browser;
       doc.os = device.os;
-      // doc.platform = device.platform;
+      doc.platform = platform;
       doc.utms = utms;
       console.log("✅ Step 5: Updating existing analytics doc");
     }

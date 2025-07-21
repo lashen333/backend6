@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import trackRoute from "./routes/trackRoute";
-import optimizeRoute from "./routes/optimizeRoute";
+
 import heroRoute from "./routes/heroRoute"; 
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
@@ -31,7 +31,7 @@ app.use(express.json());
 
 app.use("/api", trackRoute);
 app.use("/api", heroRoute);
-app.use("/api", optimizeRoute);
+
 app.use("/api", analyzeRoute);
 
 // 🚀 Start the server
