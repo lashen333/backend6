@@ -31,12 +31,19 @@ router.post("/track", async (req: Request, res: Response) => {
     const platform = utms?.utm_source || undefined;
 
     // Get user's IP address
-    const ip =
-      (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
-      req.socket.remoteAddress ||
-      "unknown";
+    const forwarded = req.headers["x-forwarded-for"];
+    let ip = "";
+    if (typeof forwarded === "string") {
+      ip = forwarded.split(",")[0].trim();
+    } else if (Array.isArray(forwarded)) {
+      ip = forwarded[0];
+    } else {
+      ip = req.socket.remoteAddress || "unknown";
+    }
 
-    console.log("✅ Step 2: IP address resolved:", ip);
+    console.log("✅ Step 2a:Headers:", req.headers);
+    console.log("✅ Step 2b:Using IP:", ip);
+
 
     // Geo/device enrichment
     const geo = await lookupGeo(ip);

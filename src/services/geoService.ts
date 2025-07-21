@@ -5,6 +5,7 @@ const fetch = (...args: [any, any?]) => import('node-fetch').then(mod => mod.def
 export async function lookupGeo(ip: string) {
   try {
     const res = await fetch(`http://ip-api.com/json/${ip}`);
+
     const data = await res.json() as { country?: string; city?: string; regionName?: string };
     return {
       country: data.country,
