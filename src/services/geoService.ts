@@ -1,21 +1,23 @@
-// src\services\geoService.ts
-
 export async function lookupGeo(ip: string) {
   try {
-    // Dynamic import works in both ESM and CJS builds
-    const fetch = (await import("node-fetch")).default;
+    const fetch = (await import('node-fetch')).default;
     const res = await fetch(`https://ipapi.co/${ip}/json/`);
+    
+    type IPApiResponse = {
+      country_name?: string;
+      city?: string;
+      region?: string;
+    };
 
-    const data = await res.json() as { country?: string; city?: string; regionName?: string };
+    const data = await res.json() as IPApiResponse;
 
-    console.log("🌎 Raw geo API response:", data);
     return {
-      country: data.country,
-      city: data.city,
-      region: data.regionName,
+      country: data.country_name || "",
+      city: data.city || "",
+      region: data.region || "",
     };
   } catch (err) {
-    console.log("Geo lookup error:", err);
+    console.error("Geo lookup error:", err);
     return {};
   }
 }
