@@ -34,6 +34,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lookupGeo = lookupGeo;
+// src\services\geoService.ts
 async function lookupGeo(ip) {
     try {
         const fetch = (await Promise.resolve().then(() => __importStar(require('node-fetch')))).default;

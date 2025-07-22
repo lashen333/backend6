@@ -1,3 +1,4 @@
+// src\services\geoService.ts
 export async function lookupGeo(ip: string) {
   try {
     const fetch = (await import('node-fetch')).default;
