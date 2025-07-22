@@ -1,9 +1,9 @@
 // src\services\geoService.ts
 
-const fetch = (...args: [any, any?]) => import('node-fetch').then(mod => mod.default(...args));
-
 export async function lookupGeo(ip: string) {
   try {
+    // Dynamic import works in both ESM and CJS builds
+    const fetch = (await import("node-fetch")).default;
     const res = await fetch(`https://ipapi.co/${ip}/json/`);
 
     const data = await res.json() as { country?: string; city?: string; regionName?: string };
