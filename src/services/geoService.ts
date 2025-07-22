@@ -1,3 +1,4 @@
+// src\services\geoService.ts
 import { fetch } from 'undici';
 
 export async function lookupGeo(ip: string) {
