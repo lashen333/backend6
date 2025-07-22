@@ -1,29 +1,33 @@
 // src/services/geoService.ts
-import * as undici from 'undici';
+import https from 'https';
 
-export async function lookupGeo(ip: string) {
-  try {
-    // 💡 Check for missing/invalid IP
-    if (!ip || typeof ip !== 'string' || ip === 'unknown') {
-      console.warn("⚠️ Invalid IP passed to lookupGeo:", ip);
-      return {};
-    }
-
+export function lookupGeo(ip: string): Promise<{ country?: string; city?: string; region?: string }> {
+  return new Promise((resolve) => {
     const url = `https://ipinfo.io/${ip}/json?token=dff57e91777a5a`;
-    const res = await undici.fetch(url);
-    const data = await res.json() as {
-      country?: string;
-      city?: string;
-      region?: string;
-    };
 
-    return {
-      country: data.country || "",
-      city: data.city || "",
-      region: data.region || "",
-    };
-  } catch (err) {
-    console.error("🌍 Geo lookup error:", err);
-    return {};
-  }
+    https.get(url, (res) => {
+      let data = '';
+
+      res.on('data', chunk => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          resolve({
+            country: json.country || '',
+            city: json.city || '',
+            region: json.region || '',
+          });
+        } catch (err) {
+          console.error("🌍 Geo parse error:", err);
+          resolve({});
+        }
+      });
+    }).on('error', (err) => {
+      console.error("🌍 Geo lookup error:", err);
+      resolve({});
+    });
+  });
 }
