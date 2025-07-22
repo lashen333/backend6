@@ -2,13 +2,14 @@ import { fetch } from 'undici';
 
 export async function lookupGeo(ip: string) {
   try {
-    const token = process.env.IPINFO_TOKEN || "dff57e91777a5a"; // use env for safety
-    const safeIp = String(ip); // ensure it's a string
+    // 💡 Check for missing/invalid IP
+    if (!ip || typeof ip !== 'string' || ip === 'unknown') {
+      console.warn("⚠️ Invalid IP passed to lookupGeo:", ip);
+      return {};
+    }
 
-    const res = await fetch(`https://ipinfo.io/${safeIp}/json?token=${token}`);
-
-    if (!res.ok) throw new Error("Failed to fetch geo data");
-
+    const url = `https://ipinfo.io/${ip}/json?token=dff57e91777a5a`;
+    const res = await fetch(url);
     const data = await res.json() as {
       country?: string;
       city?: string;

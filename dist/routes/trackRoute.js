@@ -34,6 +34,7 @@ router.post("/track", async (req, res) => {
         console.log("✅ Step 2a:Headers:", req.headers);
         console.log("✅ Step 2b:Using IP:", ip);
         // Geo/device enrichment
+        console.log("📡 Calling lookupGeo with IP:", ip);
         const geo = await (0, geoService_1.lookupGeo)(ip);
         console.log("✅ Step 3a: Geo info:", geo);
         const device = (0, deviceService_1.parseDevice)(userAgent || "");
