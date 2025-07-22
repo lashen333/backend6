@@ -1,7 +1,8 @@
 // src\services\geoService.ts
+import { fetch } from 'undici'; 
+
 export async function lookupGeo(ip: string) {
   try {
-    const fetch = (await import('node-fetch')).default;
     const res = await fetch(`https://ipinfo.io/${ip}/json?token=dff57e91777a5a`);
     
     type IPApiResponse = {
