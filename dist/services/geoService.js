@@ -38,7 +38,7 @@ exports.lookupGeo = lookupGeo;
 async function lookupGeo(ip) {
     try {
         const fetch = (await Promise.resolve().then(() => __importStar(require('node-fetch')))).default;
-        const res = await fetch(`https://ipapi.co/${ip}/json/`);
+        const res = await fetch(`https://ipinfo.io/${ip}/json?token=dff57e91777a5a`);
         const data = await res.json();
         return {
             country: data.country_name || "",

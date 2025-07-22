@@ -2,7 +2,7 @@
 export async function lookupGeo(ip: string) {
   try {
     const fetch = (await import('node-fetch')).default;
-    const res = await fetch(`https://ipapi.co/${ip}/json/`);
+    const res = await fetch(`https://ipinfo.io/${ip}/json?token=dff57e91777a5a`);
     
     type IPApiResponse = {
       country_name?: string;
