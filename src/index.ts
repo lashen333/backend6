@@ -9,6 +9,10 @@ import * as dotenv from "dotenv";
 import analyzeRoute from "./routes/analyzeRoute";
 import analyzeGeoPerformance from "./routes/analyzeGeoPerformance";
 import analyzeVisitsByHourRouter from "./routes/analyzeVisitsByHour";
+import analyzeDeviceTypeRouter from "./routes/analyzeDeviceType";
+import analyzeBrowserUsageRouter from "./routes/analyzeBrowserUsage";
+import analyzeVisitsOverTimeRouter from "./routes/analyzeVisitsOverTime";
+import analyzeEventFunnelRouter from "./routes/analyzeEventFunnel";
 
 // 🔐 Load .env variables (MONGO_URI, PORT)
 dotenv.config();
@@ -37,6 +41,10 @@ app.use("/api", heroRoute);
 app.use("/api", analyzeRoute);
 app.use("/api", analyzeGeoPerformance);
 app.use("/api", analyzeVisitsByHourRouter);
+app.use("/api", analyzeDeviceTypeRouter);
+app.use("/api", analyzeBrowserUsageRouter);
+app.use("/api", analyzeVisitsOverTimeRouter);
+app.use("/api", analyzeEventFunnelRouter);
 
 // 🚀 Start the server
 
