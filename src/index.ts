@@ -7,6 +7,8 @@ import heroRoute from "./routes/heroRoute";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import analyzeRoute from "./routes/analyzeRoute";
+import analyzeGeoPerformance from "./routes/analyzeGeoPerformance";
+import analyzeVisitsByHourRouter from "./routes/analyzeVisitsByHour";
 
 // 🔐 Load .env variables (MONGO_URI, PORT)
 dotenv.config();
@@ -33,6 +35,8 @@ app.use("/api", trackRoute);
 app.use("/api", heroRoute);
 
 app.use("/api", analyzeRoute);
+app.use("/api", analyzeGeoPerformance);
+app.use("/api", analyzeVisitsByHourRouter);
 
 // 🚀 Start the server
 
