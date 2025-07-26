@@ -1,7 +1,7 @@
 // src\routes\trackRoute.ts
 import { Router, Request, Response } from "express";
 import { UserAnalytics } from "../models/UserAnalytics";
-import { lookupGeo } from "../services/geoService";
+import { lookupGeoImproved } from "../services/geoService";
 import { parseDevice } from "../services/deviceService";
 
 const router = Router();
@@ -16,7 +16,9 @@ router.post("/track", async (req: Request, res: Response) => {
       utms,
       visitorId,
       userAgent,
-      timestamp
+      timestamp,
+      lat,
+      lon
     } = req.body;
 
     // Basic validation
@@ -46,8 +48,8 @@ router.post("/track", async (req: Request, res: Response) => {
 
 
     // Geo/device enrichment
-    console.log("📡 Calling lookupGeo with IP:", ip);
-    const geo = await lookupGeo(ip);
+    console.log("📡 Calling lookupGeoImproved with:", { ip, lat, lon });
+    const geo = await lookupGeoImproved(ip, lat, lon);
 
     console.log("✅ Step 3a: Geo info:", geo);
 
