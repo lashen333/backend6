@@ -13,7 +13,7 @@ import analyzeDeviceTypeRouter from "./routes/analyzeDeviceType";
 import analyzeBrowserUsageRouter from "./routes/analyzeBrowserUsage";
 import analyzeVisitsOverTimeRouter from "./routes/analyzeVisitsOverTime";
 import analyzeEventFunnelRouter from "./routes/analyzeEventFunnel";
-import locationRoute from "./routes/locationRoute";
+
 
 // 🔐 Load .env variables (MONGO_URI, PORT)
 dotenv.config();
@@ -38,7 +38,7 @@ app.use(express.json());
 
 app.use("/api", trackRoute);
 app.use("/api", heroRoute);
-app.use("/api", locationRoute);
+
 
 app.use("/api", analyzeRoute);
 app.use("/api", analyzeGeoPerformance);

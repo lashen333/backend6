@@ -23,9 +23,6 @@ importers:
       mongoose:
         specifier: ^8.16.1
         version: 8.16.1
-      node-fetch:
-        specifier: ^3.3.2
-        version: 3.3.2
       openai:
         specifier: ^5.8.2
         version: 5.8.2
@@ -237,10 +234,6 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  data-uri-to-buffer@4.0.1:
-    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
-    engines: {node: '>= 12'}
-
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
     engines: {node: '>=6.0'}
@@ -310,10 +303,6 @@ packages:
     resolution: {integrity: sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==}
     engines: {node: '>= 18'}
 
-  fetch-blob@3.2.0:
-    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
-    engines: {node: ^12.20 || >= 14.13}
-
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -325,10 +314,6 @@ packages:
   form-data@4.0.4:
     resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
-
-  formdata-polyfill@4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
 
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -530,11 +515,6 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
-  node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    deprecated: Use your platform's native DOMException instead
-
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -543,10 +523,6 @@ packages:
     peerDependenciesMeta:
       encoding:
         optional: true
-
-  node-fetch@3.3.2:
-    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -783,10 +759,6 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  web-streams-polyfill@3.3.3:
-    resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
-    engines: {node: '>= 8'}
-
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -1003,8 +975,6 @@ snapshots:
 
   create-require@1.1.1: {}
 
-  data-uri-to-buffer@4.0.1: {}
-
   debug@4.4.1:
     dependencies:
       ms: 2.1.3
@@ -1084,11 +1054,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  fetch-blob@3.2.0:
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.3.3
-
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -1111,10 +1076,6 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
-
-  formdata-polyfill@4.0.10:
-    dependencies:
-      fetch-blob: 3.2.0
 
   forwarded@0.2.0: {}
 
@@ -1291,17 +1252,9 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  node-domexception@1.0.0: {}
-
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
-
-  node-fetch@3.3.2:
-    dependencies:
-      data-uri-to-buffer: 4.0.1
-      fetch-blob: 3.2.0
-      formdata-polyfill: 4.0.10
 
   normalize-path@3.0.0: {}
 
@@ -1541,8 +1494,6 @@ snapshots:
   v8-compile-cache-lib@3.0.1: {}
 
   vary@1.1.2: {}
-
-  web-streams-polyfill@3.3.3: {}
 
   webidl-conversions@3.0.1: {}
 
