@@ -13,6 +13,7 @@ import analyzeDeviceTypeRouter from "./routes/analyzeDeviceType";
 import analyzeBrowserUsageRouter from "./routes/analyzeBrowserUsage";
 import analyzeVisitsOverTimeRouter from "./routes/analyzeVisitsOverTime";
 import analyzeEventFunnelRouter from "./routes/analyzeEventFunnel";
+import analyzeGeoPerformance2 from "./routes/analyzeGeoPerformance2"; // Import the new route
 
 
 // 🔐 Load .env variables (MONGO_URI, PORT)
@@ -47,6 +48,7 @@ app.use("/api", analyzeDeviceTypeRouter);
 app.use("/api", analyzeBrowserUsageRouter);
 app.use("/api", analyzeVisitsOverTimeRouter);
 app.use("/api", analyzeEventFunnelRouter);
+app.use("/api", analyzeGeoPerformance2); // Use the new route for user locations
 
 // 🚀 Start the server
 

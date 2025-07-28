@@ -15,6 +15,10 @@ export async function lookupGeoImproved(
   province?: string;
   district?: string;
   region?: string;
+  village?: string;
+  road?: string;
+  lat?: number;
+  lon?: number;
   method: string;
 }> {
   // 1. If we have GPS (lat/lon), use OpenCage
@@ -33,6 +37,10 @@ export async function lookupGeoImproved(
         district: components.county || components.district || "",
         city: components.city || components.town || components.village || "",
         region: components.state || components.province || "",
+        village: components.village || "",
+        road: components.road || "",
+        lat,
+        lon,
         method: "gps"
       };
     } catch (e) {

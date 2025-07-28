@@ -6,6 +6,12 @@ export interface UserAnalyticsType {
     country?: string;
     city?: string;
     region?: string;
+    province?: string;    
+    district?: string;    
+    village?: string;     
+    road?: string;        
+    lat?: number;         
+    lon?: number;
     deviceType?: string;
     os?: string;
     browser?: string;

@@ -72,10 +72,16 @@ router.post("/track", async (req: Request, res: Response) => {
         country: (await geo).country,
         region: (await geo).region,
         city: (await geo).city,
+        province: geo.province,
+        district: geo.district,
+        village: geo.village,
+        road: geo.road,
+        lat: geo.lat,
+        lon: geo.lon,
         deviceType: device.deviceType,
         browser: device.browser,
         os: device.os,
-        platform,
+        platform: utms?.utm_source,
         utms,
         firstSeen: now,
         lastSeen: now,
@@ -92,10 +98,17 @@ router.post("/track", async (req: Request, res: Response) => {
       doc.ip = ip;
       doc.country = (await geo).country;
       doc.city = (await geo).city;
+      doc.region = (await geo).region;
+      doc.province = geo.province;
+      doc.district = geo.district;
+      doc.village = geo.village;
+      doc.road = geo.road;
+      doc.lat = geo.lat;
+      doc.lon = geo.lon;
       doc.deviceType = device.deviceType;
       doc.browser = device.browser;
       doc.os = device.os;
-      doc.platform = platform;
+      doc.platform = utms?.utm_source;
       doc.utms = utms;
       console.log("✅ Step 5: Updating existing analytics doc");
     }
