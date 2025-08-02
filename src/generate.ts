@@ -1,5 +1,5 @@
 // src\generate.ts
-// src/generate.ts (optional one-time runner)
+
 import mongoose from "mongoose";
 import { generateAndSaveVariants } from "./services/generateVariants";
 import * as dotenv from "dotenv";

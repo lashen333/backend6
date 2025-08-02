@@ -13,7 +13,12 @@ import analyzeDeviceTypeRouter from "./routes/analyzeDeviceType";
 import analyzeBrowserUsageRouter from "./routes/analyzeBrowserUsage";
 import analyzeVisitsOverTimeRouter from "./routes/analyzeVisitsOverTime";
 import analyzeEventFunnelRouter from "./routes/analyzeEventFunnel";
-import analyzeGeoPerformance2 from "./routes/analyzeGeoPerformance2"; // Import the new route
+import analyzeGeoPerformance2 from "./routes/analyzeGeoPerformance2";
+
+import whyOptimizeRoutes from "./routes/whyOptimizeRoutes";// Import the new route
+
+import facebookAuthRoute from "./routes/facebookAuthRoute"; // Import Facebook auth route
+import campaignRoutes from "./routes/campaignRoutes"; // Import Campaign model
 
 
 // 🔐 Load .env variables (MONGO_URI, PORT)
@@ -49,6 +54,16 @@ app.use("/api", analyzeBrowserUsageRouter);
 app.use("/api", analyzeVisitsOverTimeRouter);
 app.use("/api", analyzeEventFunnelRouter);
 app.use("/api", analyzeGeoPerformance2); // Use the new route for user locations
+
+
+//Second section Routes
+app.use("/api", whyOptimizeRoutes); // Use the new route for why optimize
+
+// Facebook authentication route
+app.use("/api", facebookAuthRoute); // Use Facebook auth route
+
+// Campaign routes
+app.use("/api", campaignRoutes); // Use campaign routes
 
 // 🚀 Start the server
 
