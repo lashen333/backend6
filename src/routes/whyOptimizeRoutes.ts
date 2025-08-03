@@ -1,3 +1,4 @@
+// src\routes\whyOptimizeRoutes.ts
 import { Router } from "express";
 import { WhyOptimizeVariant } from "../models/WhyOptimizeVariant";
 import { UserWhyOptimizeEvent } from "../models/UserWhyOptimizeEvent";

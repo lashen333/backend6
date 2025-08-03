@@ -1,3 +1,4 @@
+// src\routes\facebookAuthRoute.ts
 import { Router, Request, Response } from "express";
 import axios from "axios";
 import dotenv from "dotenv";
@@ -10,6 +11,7 @@ const router = Router();
 const FB_APP_ID = process.env.FB_APP_ID!;
 const FB_APP_SECRET = process.env.FB_APP_SECRET!;
 const FB_REDIRECT_URI = process.env.FB_REDIRECT_URI!;
+const FRONTEND_URL = process.env.FRONTEND_URL!; 
 
 /**
  * STEP 1: Redirect user to Facebook login
@@ -47,7 +49,7 @@ router.get("/auth/facebook/callback", async (req: Request, res: Response) => {
     // Redirect back to frontend with token and ad accounts
     const accountsParam = encodeURIComponent(JSON.stringify(adAccounts));
     res.redirect(
-      `http://localhost:3000/connect?accessToken=${accessToken}&adAccounts=${accountsParam}`
+      `${FRONTEND_URL}/connect?accessToken=${accessToken}&adAccounts=${accountsParam}`
     );
   } catch (error: any) {
     console.error(
