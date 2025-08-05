@@ -11,7 +11,7 @@ const router = Router();
 const FB_APP_ID = process.env.FB_APP_ID!;
 const FB_APP_SECRET = process.env.FB_APP_SECRET!;
 const FB_REDIRECT_URI = process.env.FB_REDIRECT_URI!;
-const FRONTEND_URL = process.env.FRONTEND_URL!; 
+const FRONTEND_URL = process.env.FRONTEND_URL!;
 
 /**
  * STEP 1: Redirect user to Facebook login
@@ -78,7 +78,7 @@ router.post(
       await CampaignModel.deleteMany({ adAccountId });
 
       // Single nested Graph API request for campaigns -> ad sets -> ads -> creatives
-      const url = `https://graph.facebook.com/v19.0/${adAccountId}?fields=campaigns{id,name,status,adsets{id,name,status,ads{id,name,status,creative{object_story_spec,call_to_action_type}}}}&access_token=${accessToken}`;
+      const url = `https://graph.facebook.com/v19.0/${adAccountId}?fields=campaigns{id,name,status,adsets{id,name,status,ads{id,name,status,creative{image_url,thumbnail_url,object_story_spec{link_data{message,call_to_action,picture}}}}}}&access_token=${accessToken}`;
 
       const response = await axios.get(url);
 
@@ -92,15 +92,25 @@ router.post(
 
           for (const ad of adSet.ads?.data || []) {
             const creative = ad.creative || {};
-            const linkData = creative.object_story_spec?.link_data || {};
+            const storySpec = creative.object_story_spec || {};
+            const linkData = storySpec.link_data || {};
+
+            const headline = linkData.message || "";
+            const cta = linkData.call_to_action?.type || "";
+
+            const imageUrl =
+              creative.image_url ||
+              creative.thumbnail_url ||
+              linkData.picture ||
+              null;
 
             ads.push({
               adId: ad.id,
               name: ad.name,
               status: ad.status,
-              headline: linkData.message || "",
-              cta: linkData.call_to_action?.type || "",
-              imageUrl: linkData.picture || linkData.image_url || "",
+              headline,
+              cta,
+              imageUrl,
             });
           }
 

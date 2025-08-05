@@ -1,6 +1,12 @@
 // src\models\Campaign.ts
 import mongoose, { Schema, Document } from "mongoose";
 
+export interface ICarouselImage {
+  media?: string;
+  description?: string;
+  cta?: string;
+}
+
 export interface IAd extends Document {
   adId: string;
   name: string;
@@ -8,6 +14,8 @@ export interface IAd extends Document {
   headline?: string;
   cta?: string;
   imageUrl?: string;
+  videoUrl?: string;
+  carouselImages?: ICarouselImage[];
 }
 
 export interface IAdSet extends Document {
@@ -25,6 +33,12 @@ export interface ICampaign extends Document {
   adSets: IAdSet[];
 }
 
+const CarouselImageSchema = new Schema<ICarouselImage>({
+  media: String,
+  description: String,
+  cta: String,
+});
+
 const AdSchema = new Schema<IAd>({
   adId: { type: String, required: true },
   name: String,
@@ -32,6 +46,8 @@ const AdSchema = new Schema<IAd>({
   headline: String,
   cta: String,
   imageUrl: String,
+  videoUrl: String,
+  carouselImages: [CarouselImageSchema],
 });
 
 const AdSetSchema = new Schema<IAdSet>({
