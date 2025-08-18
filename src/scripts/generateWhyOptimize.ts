@@ -1,11 +1,11 @@
 // src\scripts\generateWhyOptimize.ts
 import mongoose from "mongoose";
 import { generateAndSaveWhyOptimizeVariants } from "../services/generateWhyOptimizeVariants";
-import * as dotenv from "dotenv";
-dotenv.config();
+import {env} from "../config/env";
+
 
 async function run() {
-  await mongoose.connect(process.env.MONGO_URI as string);
+  await mongoose.connect(env.mongoUri);
   console.log("📦 Connected to MongoDB");
 
   await generateAndSaveWhyOptimizeVariants(10);

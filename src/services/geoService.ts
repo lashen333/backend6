@@ -1,15 +1,9 @@
-// src\services\geoService.ts
-import https from "https";
+// src/services/geoService.ts
+import { env } from "../config/env";
 
-// Use environment variables for keys (better security)
-const OPENCAGE_KEY = process.env.OPENCAGE_KEY || "7eda444560fe4414b1d138ab182809c3";
-const IPINFO_TOKEN = process.env.IPINFO_TOKEN || "dff57e91777a5a";
+// Node 18+ has global fetch. If you’re on older Node, install and polyfill 'undici'.
 
-export async function lookupGeoImproved(
-  ip?: string,
-  lat?: number,
-  lon?: number
-): Promise<{
+type GeoResult = {
   country?: string;
   city?: string;
   province?: string;
@@ -19,18 +13,32 @@ export async function lookupGeoImproved(
   road?: string;
   lat?: number;
   lon?: number;
-  method: string;
-}> {
-  // 1. If we have GPS (lat/lon), use OpenCage
-  if (lat && lon) {
+  method: "gps" | "ip" | "error";
+};
+
+function withTimeout(ms: number): AbortController {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), ms).unref?.();
+  return controller;
+}
+
+export async function lookupGeoImproved(
+  ip?: string,
+  lat?: number,
+  lon?: number
+): Promise<GeoResult> {
+  // 1) Prefer GPS → OpenCage reverse geocode
+  if (typeof lat === "number" && typeof lon === "number") {
     try {
-      const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${OPENCAGE_KEY}`;
-      const geoRes = await fetch(url); // Using native fetch (Node 18+)
-      const geoData = (await geoRes.json()) as any;
+      if (!env.geo.opencageKey) throw new Error("Missing OPENCAGE_KEY");
 
-      console.log("Full OpenCage geoData:", JSON.stringify(geoData, null, 2));
-      const components = geoData.results[0]?.components || {};
+      const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${env.geo.opencageKey}`;
+      const controller = withTimeout(6000);
+      const resp = await fetch(url, { signal: controller.signal });
+      if (!resp.ok) throw new Error(`OpenCage HTTP ${resp.status}`);
+      const geoData: any = await resp.json();
 
+      const components = geoData?.results?.[0]?.components ?? {};
       return {
         country: components.country || "",
         province: components.state || components.province || "",
@@ -41,41 +49,35 @@ export async function lookupGeoImproved(
         road: components.road || "",
         lat,
         lon,
-        method: "gps"
+        method: "gps",
       };
     } catch (e) {
-      console.error("Geocode error:", e);
+      console.error("Geocode (GPS) error:", e);
+      // fall through to IP lookup if we have an IP
     }
   }
 
-  // 2. Fallback: IP-based lookup (using ipinfo)
-  return new Promise((resolve) => {
-    const url = `https://ipinfo.io/${ip}/json?token=${IPINFO_TOKEN}`;
-    https
-      .get(url, (res) => {
-        let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-        res.on("end", () => {
-          try {
-            const json = JSON.parse(data);
-            resolve({
-              country: json.country || "",
-              province: json.region || "",
-              city: json.city || "",
-              region: json.region || "",
-              method: "ip"
-            });
-          } catch (err) {
-            console.error("🌍 Geo parse error:", err);
-            resolve({ method: "error" });
-          }
-        });
-      })
-      .on("error", (err) => {
-        console.error("🌍 Geo lookup error:", err);
-        resolve({ method: "error" });
-      });
-  });
+  // 2) Fallback: IP-based lookup via ipinfo.io
+  try {
+    if (!ip) return { method: "error" };
+    if (!env.geo.ipinfoToken) throw new Error("Missing IPINFO_TOKEN");
+
+    const controller = withTimeout(5000);
+    const resp = await fetch(`https://ipinfo.io/${ip}/json?token=${env.geo.ipinfoToken}`, {
+      signal: controller.signal,
+    });
+    if (!resp.ok) throw new Error(`ipinfo HTTP ${resp.status}`);
+    const json: any = await resp.json();
+
+    return {
+      country: json.country || "",
+      province: json.region || "",
+      city: json.city || "",
+      region: json.region || "",
+      method: "ip",
+    };
+  } catch (err) {
+    console.error("Geo lookup (IP) error:", err);
+    return { method: "error" };
+  }
 }

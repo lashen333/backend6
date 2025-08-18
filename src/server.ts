@@ -1,9 +1,20 @@
 // src\server.ts
-// src/server.ts
+import mongoose from "mongoose";
 import app from "./app";
+import { env } from "./config/env";
 
-const PORT = process.env.PORT || 5000;
+async function start() {
+  try {
+    await mongoose.connect(env.mongoUri);
+    console.log("✅ MongoDB connected");
 
-app.listen(PORT, () => {
-  console.log(`🚀 Backend running at http://localhost:${PORT}`);
-});
+    app.listen(env.port, () => {
+      console.log(`✅ Server running on http://localhost:${env.port}`);
+    });
+  } catch (err) {
+    console.error("❌ Startup error:", err);
+    process.exit(1);
+  }
+}
+
+start();

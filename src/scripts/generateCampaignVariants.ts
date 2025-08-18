@@ -1,11 +1,11 @@
 // src\scripts\generateCampaignVariants.ts
-import "dotenv/config";
+import {env} from "../config/env";
 import OpenAI from "openai";
 import mongoose from "mongoose";
 import { CampaignModel, ICampaign, IAdSet } from "../models/Campaign";
 import { CampaignMap } from "../models/CampaignMap";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const openai = new OpenAI({ apiKey: env.openaiKey });
 
 function mapAdCtaToCopy(t?: string) {
   const map: Record<string, string> = {
@@ -38,7 +38,7 @@ function parseVariants(raw: string) {
 
 async function main(campaignId: string) {
   if (!campaignId) throw new Error("Pass campaignId: `ts-node src/scripts/generateCampaignVariants.ts <id>`");
-  await mongoose.connect(process.env.MONGO_URI!);
+  await mongoose.connect(env.mongoUri);
 
   // 1) Pull the campaign as a POJO with correct type
   const campaign = await CampaignModel.findOne({ campaignId }).lean<ICampaign>().exec();

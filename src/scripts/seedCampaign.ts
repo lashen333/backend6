@@ -2,10 +2,9 @@
 
 import mongoose from "mongoose";
 import { CampaignMap } from "../models/CampaignMap";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { env } from "../config/env";
 
-mongoose.connect(process.env.MONGO_URI!).then(async () => {
+mongoose.connect(env.mongoUri!).then(async () => {
   await CampaignMap.create({
     campaignId: "ai_signup",
     name: "AI Bootcamp Signup",

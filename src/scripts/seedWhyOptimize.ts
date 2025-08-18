@@ -1,8 +1,7 @@
 // src\scripts\seedWhyOptimize.ts
 import mongoose from "mongoose";
 import { WhyOptimizeVariant } from "../models/WhyOptimizeVariant";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { env } from "../config/env";
 
 const data = [
   {
@@ -99,7 +98,7 @@ const data = [
 
 async function run() {
   try {
-    await mongoose.connect(process.env.MONGO_URI as string);
+    await mongoose.connect(env.mongoUri as string);
     console.log("📦 Connected to MongoDB Atlas");
 
     await WhyOptimizeVariant.deleteMany({});

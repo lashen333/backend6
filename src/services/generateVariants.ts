@@ -4,11 +4,10 @@
 import OpenAI from "openai";
 import { HeroVariant } from "../models/HeroVariant";
 import { HeroVariantType } from "../types/HeroVariant.types";
-import * as dotenv from "dotenv";
-dotenv.config();
+import {env} from "../config/env";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: env.openaiKey,
 });
 
 export async function generateAndSaveVariants(count = 10) {

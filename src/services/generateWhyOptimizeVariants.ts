@@ -1,13 +1,12 @@
 // src\services\generateWhyOptimizeVariants.ts
 import OpenAI from "openai";
 import { WhyOptimizeVariant } from "../models/WhyOptimizeVariant";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { env } from "../config/env";
 
-console.log("🔑 API Key:", process.env.OPENAI_API_KEY?.slice(0, 8));
+console.log("🔑 API Key:", env.openaiKey?.slice(0, 8));
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: env.openaiKey,
 });
 
 export async function generateAndSaveWhyOptimizeVariants(count = 10) {

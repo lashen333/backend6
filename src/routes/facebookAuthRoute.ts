@@ -1,17 +1,15 @@
 // src\routes\facebookAuthRoute.ts
 import { Router, Request, Response } from "express";
 import axios from "axios";
-import dotenv from "dotenv";
+import {env} from "../config/env";
 import { CampaignModel } from "../models/Campaign";
-
-dotenv.config();
 
 const router = Router();
 
-const FB_APP_ID = process.env.FB_APP_ID!;
-const FB_APP_SECRET = process.env.FB_APP_SECRET!;
-const FB_REDIRECT_URI = process.env.FB_REDIRECT_URI!;
-const FRONTEND_URL = process.env.FRONTEND_URL!;
+const FB_APP_ID = env.fb.appId;
+const FB_APP_SECRET = env.fb.appSecret;
+const FB_REDIRECT_URI = env.fb.redirectUri;
+const FRONTEND_URL = env.allowedOrigins[0] || "http://localhost:3000";
 
 /**
  * STEP 1: Redirect user to Facebook login
